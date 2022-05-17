@@ -9,10 +9,16 @@
         "composer-plugin-api": "^2.3",
         "symfony/console": "^5.4"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "extra": {
+        "class": "Thedevopser\\AnsibleComposerPlugin\\AnsiblePlugin"
+    },
     "autoload": {
         "psr-4": {
             "Thedevopser\\AnsibleComposerPlugin\\": "src/",
-            "Thedevopser\\AnsibleComposerPlugin\\Test": "tests/"
+            "Thedevopser\\AnsibleComposerPlugin\\Test\\": "tests/"
         }
     },
     "authors": [
