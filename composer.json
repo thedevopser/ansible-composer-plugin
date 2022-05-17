@@ -1,0 +1,25 @@
+{
+    "name": "thedevopser/ansible-composer-plugin",
+    "description": "Plugin composer pour mettre en place rapidement un playbook ansible",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2",
+        "composer/composer": "^2.3",
+        "composer-plugin-api": "^2.3",
+        "symfony/console": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thedevopser\\AnsibleComposerPlugin\\": "src/",
+            "Thedevopser\\AnsibleComposerPlugin\\Test": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "thedevopser",
+            "email": "sylvain.anglade@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
