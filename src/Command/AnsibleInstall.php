@@ -48,11 +48,19 @@ class AnsibleInstall extends BaseCommand
 
         if ($type === "legacy") {
             $output->writeln('<info>Installation de Ansible pour les applications legacy</info>');
+
+            $composerSystem->copy(__DIR__ . '/../../ansible/legacy', $this->ansibleDirectory);
+            $composerSystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
+
             return Command::SUCCESS;
         }
 
         if ($type === "symfony") {
             $output->writeln('<info>Installation de Ansible pour les applications symfony</info>');
+
+            $composerSystem->copy(__DIR__ . '/../../ansible/symfony', $this->ansibleDirectory);
+            $composerSystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
+
             return Command::SUCCESS;
         }
 
