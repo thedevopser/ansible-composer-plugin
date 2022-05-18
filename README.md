@@ -16,8 +16,8 @@ Ce plugin composer permet de mettre en place rapidement une recette Ansible dans
 ```bash
 composer require thedevopser/ansible-composer-plugin --dev
 
-# Indiquer votre type de projet, par défaut symfony
-Quel est le type de projet ? (legacy / symfony) 
+# Indiquer votre type de projet, par défaut yes
+Est ce que vous installez une application Symfony ? [yes / no] 
 ```
 
 ### Adapter les fichiers 
