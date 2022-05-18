@@ -1,0 +1,32 @@
+---
+- name: Déploiement de l'application
+  hosts: all
+  remote_user: "{{ ansible_user }}"
+  vars:
+    php_path: /opt/rh/rh-php72/root/usr/bin/php
+
+  tasks:
+    - name: Vérification de la présence du dossier
+      stat:
+        path: "{{ root_path }}"
+      register: __application_path
+  
+    - name: Création du répertoire si il n'existe pas
+      file:
+        path: "{{ root_path }}"
+        state: directory
+      when: __application_path.stat.exists == false
+  
+    - name: Synchronisation des sources
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../"
+        dest: "{{ root_path }}/"
+        recursive: yes
+        delete: true
+        times: yes
+        perms: yes
+        rsync_opts:
+          - "--verbose"
+          - "--exclude=.git"
+          - "--exclude=.idea"
+          - "--exclude=ansible"
