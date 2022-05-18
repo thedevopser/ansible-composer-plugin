@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 use Symfony\Component\Finder\Finder;
 use Thedevopser\AnsibleComposerPlugin\Command\AnsibleInstall;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\iterator;
 
 class AnsibleComposerPluginCommandTest extends TestCase
 {

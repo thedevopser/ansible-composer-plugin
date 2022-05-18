@@ -41,7 +41,7 @@ class AnsibleInstall extends BaseCommand
         $filesystem->mkdir($this->ansibleDirectory);
 
         $helper = $this->getHelper('question');
-        $question = new Question("<question>Quel est le type de projet ? (legacy / symfony) </question>");
+        $question = new Question("<question>Quel est le type de projet ? (legacy / symfony) </question>", "symfony");
         $type = $helper->ask($input, $output, $question);
 
         if ($type === "legacy") {
