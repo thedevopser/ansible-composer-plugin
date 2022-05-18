@@ -7,7 +7,6 @@ use Composer\Composer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -43,10 +42,10 @@ class AnsibleInstall extends BaseCommand
         $filesystem->mkdir($this->ansibleDirectory);
 
         $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion("<question>Est ce que vous installez une application Symfony ? [yes / no]</question>", true);
+        $question = new Question("<question>Quel est le type de projet ? (legacy / symfony)</question>", 'symfony');
         $type = $helper->ask($input, $output, $question);
 
-        if (!$helper->ask($input, $output, $question)) {
+        if ($type === "legacy") {
             $output->writeln('<info>Installation de Ansible pour les applications legacy</info>');
 
             $composerSystem->copy(__DIR__ . '/../../ansible/legacy', $this->ansibleDirectory);
@@ -55,12 +54,17 @@ class AnsibleInstall extends BaseCommand
             return Command::SUCCESS;
         }
 
+        if ($type === "symfony") {
             $output->writeln('<info>Installation de Ansible pour les applications symfony</info>');
 
             $composerSystem->copy(__DIR__ . '/../../ansible/symfony', $this->ansibleDirectory);
             $composerSystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
 
             return Command::SUCCESS;
+        }
 
+        $output->writeln('<info>Installation terminée avec succès!</info>');
+
+        return Command::SUCCESS;
     }
 }
