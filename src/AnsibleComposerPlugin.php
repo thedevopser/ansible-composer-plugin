@@ -43,7 +43,7 @@ class AnsibleComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->write('<info>AnsibleComposerPlugin:</info> Installation en cours...');
 
-        $process = Process::fromShellCommandline('composer thedevopser:ansible:install');
+        $process = Process::fromShellCommandline('composer thedevopser:install');
         $process->run();
 
         $this->io->write($process->getOutput());

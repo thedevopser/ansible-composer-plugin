@@ -3,7 +3,6 @@
 namespace Thedevopser\AnsibleComposerPlugin\Command;
 
 use Composer\Command\BaseCommand;
-use Composer\Composer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,7 +41,7 @@ class AnsibleInstall extends BaseCommand
         $filesystem->mkdir($this->ansibleDirectory);
 
         $helper = $this->getHelper('question');
-        $question = new Question("<question>Quel est le type de projet ? (legacy / symfony)</question>", 'symfony');
+        $question = new Question("<question>Quel est le type de projet ? (legacy / symfony) </question>");
         $type = $helper->ask($input, $output, $question);
 
         if ($type === "legacy") {
@@ -63,8 +62,8 @@ class AnsibleInstall extends BaseCommand
             return Command::SUCCESS;
         }
 
-        $output->writeln('<info>Installation terminée avec succès!</info>');
+        $output->writeln("<error>Vous devez choisir un type d'application</error>");
 
-        return Command::SUCCESS;
+        return Command::FAILURE;
     }
 }
