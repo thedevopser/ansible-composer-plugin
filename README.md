@@ -2,6 +2,10 @@
 
 Ce plugin composer permet de mettre en place rapidement une recette Ansible dans un projet en legacy ou sous Symfony.
 
+[![Build_Status](https://app.travis-ci.com/thedevopser/ansible-composer-plugin.svg?branch=main
+)](https://app.travis-ci.com/thedevopser/ansible-composer-plugin.svg?branch=main
+)
+
 ## Pré-requis
 
 - PHP 7.2 ou supérieur
