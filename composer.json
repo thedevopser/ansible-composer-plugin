@@ -13,7 +13,7 @@
         "phpunit/phpunit": "^7.0"
     },
     "extra": {
-        "class": "Thedevopser\\AnsibleComposerPlugin\\AnsiblePlugin"
+        "class": "Thedevopser\\AnsibleComposerPlugin\\AnsibleComposerPlugin"
     },
     "autoload": {
         "psr-4": {
