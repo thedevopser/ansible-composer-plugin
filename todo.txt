@@ -1,0 +1,3 @@
+A faire : 
+
+- Ajout d'une commande Symfony qui permet l'initialisation de la BDD avec le choix pour utiliser ou non les migrations de Doctrine.
