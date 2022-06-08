@@ -14,6 +14,7 @@ class AnsibleComposerPluginCommandProvider implements CommandProvider
         return [
             new AnsibleInstall(__DIR__.'/../../../../../ansible'),
             new AnsibleComposerPluginCommand(),
+            new MakeFileInstall(__DIR__.'/../../../../../Makefile'),
         ];
     }
 }

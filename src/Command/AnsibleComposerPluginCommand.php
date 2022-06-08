@@ -19,8 +19,11 @@ class AnsibleComposerPluginCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = $this->getApplication()->find('thedevopser:ansible:install');
-        $command->run($input, $output);
+        $installAnsible = $this->getApplication()->find('thedevopser:ansible:install');
+        $installAnsible->run($input, $output);
+
+        $installMakefile = $this->getApplication()->find('thedevopser:makefile:install');
+        $installMakefile->run($input, $output);
 
         return Command::SUCCESS;
     }

@@ -41,6 +41,8 @@ class AnsibleComposerPlugin implements PluginInterface, EventSubscriberInterface
 
     public function onPostInstall()
     {
+
+        // Mise en place du dossier ansible dans le projet.
         $this->io->write('<info>AnsibleComposerPlugin:</info> Installation en cours...');
 
         $process = new Process(['composer', 'thedevopser:install']);
@@ -49,6 +51,7 @@ class AnsibleComposerPlugin implements PluginInterface, EventSubscriberInterface
 
         $this->io->write($process->getOutput());
         $this->io->write('<info>AnsibleComposerPlugin:</info> Installation terminée.');
+
     }
     public function deactivate(Composer $composer, IOInterface $io)
     {
