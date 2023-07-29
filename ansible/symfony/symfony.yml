@@ -2,21 +2,22 @@
 - name: Déploiement de l'application
   hosts: all
   remote_user: "{{ ansible_user }}"
-  vars:
-    php_path: /opt/rh/rh-php72/root/usr/bin/php
 
   tasks:
+    - name: Inclure les variables utilisateur
+      include_vars: vars.yml
+
     - name: Vérification de la présence du dossier
       stat:
         path: "{{ root_path }}"
       register: __application_path
-  
+
     - name: Création du répertoire si il n'existe pas
       file:
         path: "{{ root_path }}"
         state: directory
       when: __application_path.stat.exists == false
-  
+
     - name: Synchronisation des sources
       ansible.posix.synchronize:
         src: "{{ playbook_dir }}/../"
@@ -30,25 +31,19 @@
           - "--exclude=.git"
           - "--exclude=.idea"
           - "--exclude=ansible"
-          - "--exclude=developpement/"
           - "--exclude=node_modules"
-          - "--exclude=quality"
           - "--exclude=tests"
           - "--exclude=var"
           - "--exclude=.env.local"
           - "--exclude=.env.test"
           - "--exclude=.gitignore"
           - "--exclude=.gitlab-ci.yml"
-          - "--exclude=.php_cs.cache"
           - "--exclude=.phpunit.result.cache"
           - "--exclude=composer.lock"
-          - "--exclude=jest.config.js"
           - "--exclude=package.json"
           - "--exclude=phpunit.xml.dist"
-          - "--exclude=postcss.config.js"
           - "--exclude=README.md"
           - "--exclude=symfony.lock"
-          - "--exclude=tailwind.config.js"
           - "--exclude=webpack.config.js"
           - "--exclude=yarn.lock"
 
@@ -63,7 +58,7 @@
       command: "{{ php_path }} bin/console doctrine:database:create --if-not-exists"
       args:
         chdir: "{{ root_path }}"
-  
+
     - name: Migrer les données
       command: "{{ php_path }} bin/console doctrine:migrations:migrate -n"
       args:
