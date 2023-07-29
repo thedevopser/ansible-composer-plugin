@@ -9,6 +9,7 @@ Ce plugin composer permet de mettre en place rapidement une recette Ansible dans
 ## Pré-requis
 
 - PHP 7.2 ou supérieur
+- Symfony 5.x
 - composer v2.x
 
 ### Installation
@@ -17,7 +18,17 @@ Ce plugin composer permet de mettre en place rapidement une recette Ansible dans
 composer require thedevopser/ansible-composer-plugin --dev
 
 # Indiquer votre type de projet, par défaut symfony
-Quel est le type de projet ? (legacy / symfony)
+Sélectionner votre type de projet
+  [0] legacy
+  [1] symfony
+ > 1
+Vous avez choisi : symfony
+Installation complete.
+```
+
+En cas de soucis, vous pouvez réinstaller les fichiers avec la commande 
+```bash
+composer thedevopser:ansible:install --force
 ```
 
 ### Adapter les fichiers 
@@ -25,7 +36,7 @@ Quel est le type de projet ? (legacy / symfony)
 Une fois l'installation terminée, vous aurez à la racine de votre projet un dossier `ansible` qui contiendra au minimum deux fichiers : 
 
 - hosts.yml
-- deploy-playbook-symfony.yml ou deploy-playbook-legacy.yml
+- symfony.yml ou legacy.yml
 
 Vous devrez dupliquer les fichiers hosts par le nombre de serveur sur lesquels vous voulez déployer (ie qualif.yml, dev.yml, prod.yml)
 
