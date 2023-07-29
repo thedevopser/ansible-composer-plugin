@@ -3,10 +3,10 @@
 namespace Thedevopser\AnsibleComposerPlugin\Command;
 
 use Composer\Command\BaseCommand;
-use Symfony\Component\Console\Command\Command;
+use Composer\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 
 class AnsibleInstall extends BaseCommand
@@ -25,7 +25,8 @@ class AnsibleInstall extends BaseCommand
     protected function configure()
     {
         $this->setName('thedevopser:ansible:install');
-        $this->setDescription('Install Ansible');
+        $this->setDescription('Installs Ansible files depending on the project type');
+        $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force reinstall even if Ansible directory already exists');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -34,36 +35,32 @@ class AnsibleInstall extends BaseCommand
         $composerSystem = new \Composer\Util\Filesystem();
 
         if (is_dir($this->ansibleDirectory)) {
-            $output->writeln('<info>Installation déjà effectuée. Merci de supprimer le dossier ansible à la racine de votre projet pour le réinstaller</info>');
-            return Command::SUCCESS;
+            if (!$input->getOption('force')) {
+                $output->writeln('Le répertoire ansible existe déjà. Veuillez utiliser l\'option --force ou supprimer le dossier pour réinstaller');
+                return 1; // return non-zero to indicate error
+            } else {
+                $filesystem->remove($this->ansibleDirectory); // Delete directory if --force option is present
+            }
         }
+
+        $helper = $this->getHelper('question');
+        $question = new ChoiceQuestion(
+            'Sélectionner votre type de projet',
+            ['legacy', 'symfony'], // The choices
+            0 // The default choice is the first one
+        );
+        $question->setErrorMessage('La réponse %s est invalide.');
+
+        $type = $helper->ask($input, $output, $question);
+        $output->writeln('Vous avez choisi : ' . $type);
 
         $filesystem->mkdir($this->ansibleDirectory);
 
-        $helper = $this->getHelper('question');
-        $question = new Question("<question>Quel est le type de projet ? (legacy / symfony) </question>", "symfony");
-        $type = $helper->ask($input, $output, $question);
+        $filesystem->copy(__DIR__ . '/../../ansible/'. $type . '/' . $type . '.yml', $this->ansibleDirectory . '/' . $type . '.yml');
+        $filesystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
 
-        if ($type === "legacy") {
-            $output->writeln('<info>Installation de Ansible pour les applications legacy</info>');
 
-            $composerSystem->copy(__DIR__ . '/../../ansible/legacy', $this->ansibleDirectory);
-            $composerSystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
-
-            return Command::SUCCESS;
-        }
-
-        if ($type === "symfony") {
-            $output->writeln('<info>Installation de Ansible pour les applications symfony</info>');
-
-            $composerSystem->copy(__DIR__ . '/../../ansible/symfony', $this->ansibleDirectory);
-            $composerSystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
-
-            return Command::SUCCESS;
-        }
-
-        $output->writeln("<error>Vous devez choisir un type d'application</error>");
-
-        return Command::FAILURE;
+        $output->writeln('Installation complete.');
+        return 0;
     }
 }

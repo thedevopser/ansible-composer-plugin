@@ -16,7 +16,7 @@ class AnsibleComposerPluginCommandTest extends TestCase
 {
     const DIR_ANSIBLE_SOURCE = __DIR__ . '/../../ansible';
     const DIR_ANSIBLE_TARGET = __DIR__ . '/../ansible-target';
-    const ANSIBLE_ALREADY_INSTALL_MESSAGE = 'Installation déjà effectuée. Merci de supprimer le dossier ansible à la racine de votre projet pour le réinstaller';
+    const ANSIBLE_ALREADY_INSTALL_MESSAGE = 'Le répertoire ansible existe déjà. Veuillez utiliser l\'option --force ou supprimer le dossier pour réinstaller';
 
     public function testCreateAnsibleDir()
     {
@@ -33,7 +33,7 @@ class AnsibleComposerPluginCommandTest extends TestCase
         $return = $command->execute([]);
 
         $finder = new Finder();
-        $finder->files()->in(self::DIR_ANSIBLE_SOURCE.'/legacy');
+        $finder->files()->in(self::DIR_ANSIBLE_SOURCE . '/legacy');
 
         foreach ($finder as $file) {
             $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/' . $file->getRelativePathname());
@@ -49,7 +49,7 @@ class AnsibleComposerPluginCommandTest extends TestCase
         $return = $command->execute([]);
 
         $finder = new Finder();
-        $finder->files()->in(self::DIR_ANSIBLE_SOURCE.'/symfony');
+        $finder->files()->in(self::DIR_ANSIBLE_SOURCE . '/symfony');
 
         foreach ($finder as $file) {
             $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/' . $file->getRelativePathname());
@@ -74,7 +74,25 @@ class AnsibleComposerPluginCommandTest extends TestCase
         $this->assertStringContainsString(self::ANSIBLE_ALREADY_INSTALL_MESSAGE, $command->getDisplay());
     }
 
-    public function tearDown()
+    public function testConfigure()
+    {
+        $command = new AnsibleInstall(self::DIR_ANSIBLE_TARGET);
+        $definition = $command->getDefinition();
+
+        // Test the command name
+        $this->assertEquals('thedevopser:ansible:install', $command->getName());
+
+        // Test the command description
+        $this->assertEquals('Installs Ansible files depending on the project type', $command->getDescription());
+
+        // Test the --force option
+        $this->assertTrue($definition->hasOption('force'));
+        $forceOption = $definition->getOption('force');
+        $this->assertEquals('f', $forceOption->getShortcut());
+        $this->assertEquals('Force reinstall even if Ansible directory already exists', $forceOption->getDescription());
+    }
+
+    public function tearDown(): void
     {
         if (is_dir(self::DIR_ANSIBLE_TARGET)) {
             $fileSystem = new Filesystem();
