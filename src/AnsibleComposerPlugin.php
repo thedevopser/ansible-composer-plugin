@@ -55,7 +55,7 @@ class AnsibleComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->write('<info>AnsibleComposerPlugin:</info> Installation en cours...');
 
-        $process = new Process(['composer', 'thedevopser:ansible:install --force']);
+        $process = new Process(['composer', 'thedevopser:ansible:install', '--force']);
         $process->setTty(true);
         $process->run();
 
