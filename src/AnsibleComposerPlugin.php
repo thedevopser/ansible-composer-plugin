@@ -28,7 +28,7 @@ class AnsibleComposerPlugin implements PluginInterface, EventSubscriberInterface
     {
         return [
             'post-install-cmd' => 'onPostInstall',
-            'post-update-cmd' => 'onPostInstall',
+            'post-update-cmd' => 'onPostUpdate',
         ];
     }
 
