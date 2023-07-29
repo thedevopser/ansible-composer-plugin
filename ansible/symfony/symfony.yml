@@ -50,10 +50,11 @@
 - name: Déploiement de la BDD
   hosts: all
   remote_user: "{{ ansible_user }}"
-  vars:
-    php_path: /opt/rh/rh-php72/root/usr/bin/php
 
   tasks:
+    - name: Inclure les variables utilisateur
+      include_vars: vars.yml
+
     - name: Créer la BDD si elle existe pas
       command: "{{ php_path }} bin/console doctrine:database:create --if-not-exists"
       args:
@@ -67,10 +68,11 @@
 - name: Nettoyage des caches
   hosts: all
   remote_user: "{{ ansible_user }}"
-  vars:
-    php_path: /opt/rh/rh-php72/root/usr/bin/php
 
   tasks:
+    - name: Inclure les variables utilisateur
+      include_vars: vars.yml
+
     - name: Vider le cache - dev
       command: "{{ php_path }} bin/console c:c"
       args:
