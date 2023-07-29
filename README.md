@@ -33,6 +33,13 @@ composer thedevopser:ansible:install --force
 
 ### Adapter les fichiers 
 
+Adapter le fichier `vars.yml` avec votre environnement
+
+```yaml
+#vars.yml
+php_path: #par exemple /usr/bin/php
+```
+
 Une fois l'installation terminée, vous aurez à la racine de votre projet un dossier `ansible` qui contiendra au minimum deux fichiers : 
 
 - hosts.yml

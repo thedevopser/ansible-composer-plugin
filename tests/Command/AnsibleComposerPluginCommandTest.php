@@ -40,6 +40,7 @@ class AnsibleComposerPluginCommandTest extends TestCase
         }
 
         $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/hosts.yml');
+        $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/vars.yml');
     }
 
     public function testCopyFileForSymfonyApplication()
@@ -56,6 +57,7 @@ class AnsibleComposerPluginCommandTest extends TestCase
         }
 
         $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/hosts.yml');
+        $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/vars.yml');
     }
 
     public function testDirAlreadyCreated()
@@ -72,6 +74,29 @@ class AnsibleComposerPluginCommandTest extends TestCase
 
         $this->assertSame(0, iterator_count($finder));
         $this->assertStringContainsString(self::ANSIBLE_ALREADY_INSTALL_MESSAGE, $command->getDisplay());
+    }
+
+    public function testForceModeIsOk()
+    {
+        $fileSytem = new \Symfony\Component\Filesystem\Filesystem();
+        $fileSytem->mkdir(self::DIR_ANSIBLE_TARGET);
+
+        $command = $this->getCommand(self::DIR_ANSIBLE_TARGET);
+        $command->setInputs(['symfony']);
+        $return = $command->execute([
+            'command' => 'thedevopser:ansible:install',
+            '--force' => true
+        ]);
+
+        $finder = new Finder();
+        $finder->files()->in(self::DIR_ANSIBLE_TARGET);
+
+        foreach ($finder as $file) {
+            $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/' . $file->getRelativePathname());
+        }
+
+        $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/hosts.yml');
+        $this->assertFileExists(self::DIR_ANSIBLE_TARGET . '/vars.yml');
     }
 
     public function testConfigure()

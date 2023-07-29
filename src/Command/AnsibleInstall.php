@@ -58,6 +58,7 @@ class AnsibleInstall extends BaseCommand
 
         $filesystem->copy(__DIR__ . '/../../ansible/'. $type . '/' . $type . '.yml', $this->ansibleDirectory . '/' . $type . '.yml');
         $filesystem->copy(__DIR__ . '/../../ansible/hosts.yml', $this->ansibleDirectory . '/hosts.yml');
+        $filesystem->copy(__DIR__ . '/../../ansible/vars.yml', $this->ansibleDirectory . '/vars.yml');
 
 
         $output->writeln('Installation complete.');
